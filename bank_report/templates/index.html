@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>File Upload</title>
+    <style>
+        .form-group {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Upload PDF and XLSX Files</h2>
+    
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="pdf_file">Upload PDF File:</label>
+            <input type="file" id="pdf_file" name="pdf_file" accept=".pdf" onchange="checkFileTypes()">
+        </div>
+        <span id="pdf_error" style="color: red;"></span>
+        
+        <div class="form-group">
+            <label for="xlsx_file">Upload XLSX File:</label>
+            <input type="file" id="xlsx_file" name="xlsx_file" accept=".xlsx" onchange="checkFileTypes()">
+        </div>
+        <span id="xlsx_error" style="color: red;"></span>
+        
+        <div class="form-group">
+            <button type="submit" id="generate_button" disabled>Generate Response</button>
+        </div>
+    </form>
+
+    <script>
+        function checkFileTypes() {
+            var pdfInput = document.getElementById('pdf_file');
+            var xlsxInput = document.getElementById('xlsx_file');
+            var generateButton = document.getElementById('generate_button');
+            var pdfError = document.getElementById('pdf_error');
+            var xlsxError = document.getElementById('xlsx_error');
+
+            if (pdfInput.files.length > 0) {
+                var pdfFileType = pdfInput.files[0].name.split('.').pop().toLowerCase();
+
+                if (pdfFileType === 'pdf') {
+                    pdfError.innerHTML = '';
+                } else {
+                    pdfError.innerHTML = 'Please choose a PDF file.';
+                    pdfInput.value = ''; // Clear the input
+                }
+            }
+
+            if (xlsxInput.files.length > 0) {
+                var xlsxFileType = xlsxInput.files[0].name.split('.').pop().toLowerCase();
+
+                if (xlsxFileType === 'xlsx') {
+                    xlsxError.innerHTML = '';
+                } else {
+                    xlsxError.innerHTML = 'Please choose an XLSX file.';
+                    xlsxInput.value = ''; // Clear the input
+                }
+            }
+
+            if (pdfInput.files.length > 0 && xlsxInput.files.length > 0) {
+                generateButton.disabled = false;
+            } else {
+                generateButton.disabled = true;
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
